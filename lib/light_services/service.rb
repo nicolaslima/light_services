@@ -11,21 +11,25 @@ module LightServices
     def initialize(*args)
       validate_arguments(args)
       initialize_class_attributes(args)
-      initialize_returns_attribute
+      initialize_returns_attribute if has_returns?
       setup_returns if returns_block
     end
 
     def call
       if has_conditional?
-        validate_conditional
+        executed_method_return = validate_conditional
       else
-        send( execute_method_name )
+        executed_method_return = send( execute_method_name )
       end
       
-      instance_variable_get("@#{ returns_name }")
+      has_returns? ? instance_variable_get("@#{ returns_name }") : executed_method_return
     end
 
     private
+
+      def has_returns?
+        !returns.nil?
+      end
 
       def has_conditional?
         !execute_method_options[:if].nil? && !execute_method_options[:if].empty?

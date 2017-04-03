@@ -25,7 +25,7 @@ class UserCreator < LightServices::Service
   validates  :first_name, :last_name, presence: true
   execute    :create_user, if: :input_valid?, fallback: :add_error
   
-  returns    User do |user|
+  returns User do |user|
     @user = user.new @first_name, @last_name
   end
 
