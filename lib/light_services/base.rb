@@ -17,7 +17,7 @@ module LightServices
       end
 
       def get_returns
-        @returns || ''
+        @returns
       end
 
       def get_returns_block
